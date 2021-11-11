@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -88,13 +89,13 @@ class PostController extends Controller
      */
     public function edit($post)
     {
-        if (Auth::User()->id == $post)
+        $posts = Post::find($post);
+        if (Auth::User()->id == $posts->user_id)
         {
-            $posts = Post::find($post);
             return view('posts.postEdit', compact('posts'));
         }else
         {
-            return $this->redirectToRoute('dashboard')->with('message', 'Permissions denied!');
+            return redirect('/dashboard')->with('message', 'Permission denegado');
         }
     }
 
@@ -105,9 +106,42 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, $post)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'content' => ['required', 'string', 'min:20'],
+            'image' => ['image']
+        ]);
+
+        $posts = Post::find($post);
+
+        if ($request->hasFile('image'))
+        {
+            $url = str_replace('storage', 'public', $posts->image);
+
+            Storage::delete($url);
+
+            $posts->update([
+                'title' => $request->title,
+                'content' => $request->content,
+                'image' => $request->file('image')->store('public/posts'),
+                'likes' => 0,
+                'user_id' => Auth::user()->id,
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+        }else
+        {
+            $posts->update([
+                'title' => $request->title,
+                'content' => $request->content,
+                'likes' => 0,
+                'user_id' => Auth::user()->id,
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+        }
+
+        return redirect('/dashboard')->with('message', 'Your post edit');
     }
 
     /**

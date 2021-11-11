@@ -7,9 +7,9 @@
     </x-slot>
     <div class="mt-4 flex items-center justify-center">
 
-        <form method="POST" action="{{ route('posts.store') }}" class="p-4 w-11/12 ms:w-4/5 mt-4 bg-white rounded-lg" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('posts.update', ['post' => $posts->id]) }}" class="p-4 w-11/12 ms:w-4/5 mt-4 bg-white rounded-lg" enctype="multipart/form-data">
+            {{ method_field('PUT') }}
             @csrf
-
             <!-- Validation Errors -->
             <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
@@ -36,7 +36,7 @@
 
             <div class="flex items-center justify-end mt-4">
                 <x-button class="mx-4">
-                    {{ __('Create') }}
+                    {{ __('Edit') }}
                 </x-button>
             </div>
         </form>
