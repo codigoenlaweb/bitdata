@@ -27,14 +27,16 @@
         @if ($posts->name === Auth::user()->name)
             <div class="mt-3 flex justify-center">
                 <a href="{{ route('posts.edit', ['post' => $posts->id])}}">
-                    <button class="mx-6 bg-white hover:bg-blue-500 hover:text-white text-gray-800 font-bold hover:border-gray-500 py-2 px-4 border border-gray-400 rounded shadow">
+                    <button class="mx-6 bg-white hover:bg-blue-500 hover:text-white text-gray-800 font-bold hover:border-blue-800 py-2 px-4 border border-gray-400 rounded shadow">
                         Edit
                     </button>
                 </a>
 
-                <button class="mx-6 bg-white hover:bg-red-500 hover:text-white text-gray-800 font-bold hover:border-gray-500 py-2 px-4 border border-gray-400 rounded shadow">
-                    Drop
-                </button>
+                <form method="POST" action="{{ route('posts.destroy', ['post' => $posts->id]) }}">
+                    {{ method_field('DELETE') }}
+                    @csrf
+                    <input type="submit" onclick="return confirm('drop?')" value="Drop" class="mx-6 bg-white hover:bg-red-500 hover:text-white text-gray-800 font-bold hover:border-red-800 py-2 px-4 border border-gray-400 rounded shadow">
+                </form>
             </div>
         @endif
     </div>

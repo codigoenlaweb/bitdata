@@ -1,17 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Home') }}
+            Your favorite programming blog!
         </h2>
     </x-slot>
     <div>
         @if(Session::has('message'))
-            <div class="mx-auto mt-3 w-4/6 bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
+            <div class="mx-auto mt-6 w-4/6 px-4 py-4 bg-blue-100 border border-blue-400 text-blue-700 rounded relative" role="alert">
                 <strong class="font-bold">Attention!</strong>
                 <span class="block sm:inline">{{ Session::get('message') }}</span>
             </div>
         @endif
-        <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-4 py-12">
+        <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-4 py-6">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 @foreach ($posts as $post)
                     <div class="w-full bg-white rounded-lg sahdow-lg overflow-hidden flex flex-col md:flex-row">
@@ -51,6 +51,14 @@
             <div class="mt-5 mx-auto w-56">
                 {{ $posts->links() }}
             </div>
+
+            @if (!$posts->count())
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 bg-white border-b border-gray-200">
+                        Be the first to write an awesome blog!
+                    </div>
+                </div>
+            @endif
         </section>
 
     </div>

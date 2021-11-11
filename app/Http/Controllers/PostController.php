@@ -95,7 +95,7 @@ class PostController extends Controller
             return view('posts.postEdit', compact('posts'));
         }else
         {
-            return redirect('/dashboard')->with('message', 'Permission denegado');
+            return redirect('/dashboard')->with('message', 'permission denied!');
         }
     }
 
@@ -118,10 +118,11 @@ class PostController extends Controller
 
         if ($request->hasFile('image'))
         {
-            $url = str_replace('storage', 'public', $posts->image);
+            if ($posts->image != 'public/posts/default_post.jpg') {
+                $url = str_replace('storage', 'public', $posts->image);
 
-            Storage::delete($url);
-
+                Storage::delete($url);
+            }
             $posts->update([
                 'title' => $request->title,
                 'content' => $request->content,
@@ -141,7 +142,7 @@ class PostController extends Controller
             ]);
         }
 
-        return redirect('/dashboard')->with('message', 'Your post edit');
+        return redirect('/dashboard')->with('message', 'Your post has been updated!');
     }
 
     /**
@@ -150,8 +151,16 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($post)
     {
-        //
+        $posts = Post::find($post);
+
+        if ($posts->image != 'public/posts/default_post.jpg') {
+            $url = str_replace('storage', 'public', $posts->image);
+
+            Storage::delete($url);
+        }
+        Post::destroy($post);
+        return redirect('/dashboard')->with('message', 'Your post has been deleted!');
     }
 }
