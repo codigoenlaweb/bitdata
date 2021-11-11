@@ -9,7 +9,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::join('users', 'users.id', '=', 'posts.user_id')->select('users.name', 'posts.*')->cursorPaginate(4);
         return view('dashboard', compact('posts'));
     }
 }

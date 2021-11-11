@@ -17,20 +17,20 @@
             <div>
                 <x-label for="title" :value="__('Title')" />
 
-                <x-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title')" required autofocus />
+                <x-input id="title" class="block mt-1 w-full" type="text" name="title" :value="$posts->title" required autofocus />
             </div>
 
             <!-- content -->
             <div class="mt-4">
                 <x-label for="content" :value="__('Content')" />
 
-                <textarea id="content" class="h-28 focus:border-blue-100 block mt-1 w-full rounded-md border-gray-300" name="content" required></textarea>
+                <textarea id="content" class="h-28 focus:border-blue-100 block mt-1 w-full rounded-md border-gray-300" name="content" required>{{$posts->content}}</textarea>
             </div>
 
             <!-- Post Image -->
             <div class="mt-4">
-                <x-label for="image" :value="__('Post image')"/>
-                <x-input id="image" class="mt-2" type="file" name="image" :value="old('image')"/>
+                <x-label for="image" :value="__('change image')"/>
+                <x-input id="image" class="mt-2" type="file" name="image"/>
             </div>
 
 

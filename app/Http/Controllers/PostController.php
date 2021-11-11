@@ -38,7 +38,7 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => ['required', 'string', 'max:255'],
-            'content' => ['required', 'string'],
+            'content' => ['required', 'string', 'min:20'],
             'image' => ['image']
         ]);
 
@@ -50,6 +50,7 @@ class PostController extends Controller
                 'image' => $request->file('image')->store('public/posts'),
                 'likes' => 0,
                 'user_id' => Auth::user()->id,
+                'created_at' => date('Y-m-d H:i:s'),
             ]);
         }else
         {
@@ -59,6 +60,7 @@ class PostController extends Controller
                 'image' => 'public/posts/default_post.jpg',
                 'likes' => 0,
                 'user_id' => Auth::user()->id,
+                'created_at' => date('Y-m-d H:i:s'),
             ]);
         }
 
@@ -72,9 +74,10 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show($post)
     {
-        //
+        $posts = Post::join('users', 'users.id', '=', 'posts.user_id')->select('users.name', 'posts.*')->find($post);
+        return view('posts.postShow', compact('posts'));
     }
 
     /**
@@ -83,9 +86,16 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
+    public function edit($post)
     {
-        //
+        if (Auth::User()->id == $post)
+        {
+            $posts = Post::find($post);
+            return view('posts.postEdit', compact('posts'));
+        }else
+        {
+            return $this->redirectToRoute('dashboard')->with('message', 'Permissions denied!');
+        }
     }
 
     /**
