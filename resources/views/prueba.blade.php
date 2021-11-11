@@ -20,9 +20,4 @@
             </div>
         </div>
     </div>
-    @forelse ($posts as $post)
-        <p>{{ $post->title }}</p>
-    @empty
-        <p>Be the first to write a Post</p>
-    @endforelse
 </x-app-layout>
