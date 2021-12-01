@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Coments;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ComentsController extends Controller
 {
@@ -14,7 +15,7 @@ class ComentsController extends Controller
      */
     public function index()
     {
-        //
+        return 'hola';
     }
 
     /**
@@ -35,7 +36,17 @@ class ComentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'coment' => ['required', 'string', 'min:5'],
+        ]);
+
+        Coments::insert([
+            'coment' => $request->coment,
+            'posts_id' => $request->post_id,
+            'user_id' => Auth::user()->id,
+        ]);
+
+        return redirect('posts/'.$request->post_id);
     }
 
     /**
@@ -78,8 +89,11 @@ class ComentsController extends Controller
      * @param  \App\Models\Coments  $coments
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Coments $coments)
+    public function destroy(Request $request, Coments $coment)
     {
-        //
+        $coment_delete = Coments::find($coment);
+
+        Coments::destroy($coment_delete);
+        return redirect('posts/'.$request->post_id);
     }
 }

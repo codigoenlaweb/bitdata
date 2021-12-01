@@ -60,7 +60,6 @@
                 </div>
             @endif
         </section>
-
     </div>
 
 </x-app-layout>

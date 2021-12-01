@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coments;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -78,7 +79,9 @@ class PostController extends Controller
     public function show($post)
     {
         $posts = Post::join('users', 'users.id', '=', 'posts.user_id')->select('users.name', 'posts.*')->find($post);
-        return view('posts.postShow', compact('posts'));
+        $coments = Coments::join('users', 'users.id', '=', 'coments.user_id')->select('users.name', 'coments.*')->where('posts_id', $post)->get();
+        $countcoments = Coments::where('posts_id', $post)->get()->count();
+        return view('posts.postShow', compact('posts', 'coments', 'countcoments'));
     }
 
     /**

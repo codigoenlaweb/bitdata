@@ -12,8 +12,8 @@
                 <span class="block sm:inline">{{ Session::get('message') }}</span>
             </div>
         @endif
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 w-11/12">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h2 class="text-3xl text-gray-600 font-bold">{{ $posts->title }}</h2>
                     <p class="text-lg text-gray-500 font-bold">{{ $posts->likes }} likes</p>
@@ -25,7 +25,7 @@
             </div>
         </div>
         @if ($posts->name === Auth::user()->name)
-            <div class="mt-3 flex justify-center">
+            <div class="mt-4 flex justify-center">
                 <a href="{{ route('posts.edit', ['post' => $posts->id])}}">
                     <button class="mx-6 bg-white hover:bg-blue-500 hover:text-white text-gray-800 font-bold hover:border-blue-800 py-2 px-4 border border-gray-400 rounded shadow">
                         Edit
@@ -39,5 +39,59 @@
                 </form>
             </div>
         @endif
+
+        <div class="mt-14">
+            <div class="w-11/12 md:w-4/5 lg:w-3/4 max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-5 py-4">
+                    <div class="bg-white border-gray-200 text-center">
+                        <p class="text-2xl text-gray-600 font-bold">Comment on this post</p>
+                    </div>
+                    <form action="{{ route('coments.store') }}" method="post" class="mx-auto mt-4">
+                        @csrf
+                        <textarea class="w-full text-lg resize-none border rounded-md h-24 bg-transparent" name="coment" id="coment"></textarea>
+                        <div class="flex justify-end">
+                            <input type="submit" value="Send" name="send" id="send" class="px-4 py-2 bg-gray-800 text-white rounded">
+                        </div>
+                        <input type="hidden" name="post_id" id="post_id" value="{{$posts->id}}">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-10">
+            <div class="w-11/12 md:w-4/5 lg:w-3/4 max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-5 py-4">
+                    <div class="bg-white border-gray-200">
+                        <p class="text-2xl text-gray-600 font-bold">{{$countcoments}} coments</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @forelse ($coments as $coment)
+            <div class="py-2">
+                <div class="w-11/12 md:w-4/5 lg:w-3/4 max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-5 py-4">
+                        <div class="bg-white border-gray-200">
+                            <div class="flex">
+                                <p class="text-2xl text-gray-600 font-bold">{{ $coment->name }}</p>
+                                @if ($coment->user_id === Auth::user()->id || $posts->name === Auth::user()->name)
+                                    <form method="POST" action="{{ route('coments.destroy', ['coment' => $coment->id]) }}">
+                                        {{ method_field('DELETE') }}
+                                        @csrf
+                                        <input type="hidden" name="post_id" value="{{$coment->posts_id}}">
+                                        <input type="submit" value="Drop" class="mx-6 bg-white hover:text-red-600 text-gray-800 font-bold hover:border-red-600 py-1 px-3 border border-gray-400 rounded shadow">
+                                    </form>
+                                @endif
+                            </div>
+                            <p class="mt-1 text-lg text-gray-400 font-bold">{{ $coment->coment }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @empty
+
+        @endforelse
     </div>
 </x-app-layout>
+
+
