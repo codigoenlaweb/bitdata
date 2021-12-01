@@ -145,7 +145,7 @@ class PostController extends Controller
             ]);
         }
 
-        return redirect('/dashboard')->with('message', 'Your post has been updated!');
+        return redirect('posts/'.$request->post_id)->with('message', 'Your post has been updated!');
     }
 
     /**

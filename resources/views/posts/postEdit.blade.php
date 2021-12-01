@@ -33,6 +33,7 @@
                 <x-input id="image" class="mt-2" type="file" name="image"/>
             </div>
 
+            <input type="hidden" name="post_id" value="{{$posts->id}}">
 
             <div class="flex items-center justify-end mt-4">
                 <x-button class="mx-4">
