@@ -17,8 +17,7 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->string('title');
             $table->longText('content');
-            $table->string('image');
-            $table->integer('likes');
+            $table->string('image')->default('post_img'); // REVISAR
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });

@@ -1,8 +1,9 @@
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
+            <div class="mt-8"></div>
             <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                <x-application-logo class="fill-current" />
             </a>
         </x-slot>
 
@@ -17,6 +18,13 @@
                 <x-label for="name" :value="__('Name')" />
 
                 <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
+            </div>
+
+            <!-- User -->
+            <div class="mt-4">
+                <x-label for="name" :value="__('User')" />
+
+                <x-input id="user" class="block mt-1 w-full" type="text" name="user" :value="old('user')" required autofocus />
             </div>
 
             <!-- Email Address -->

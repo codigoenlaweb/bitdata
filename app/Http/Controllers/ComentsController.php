@@ -40,7 +40,7 @@ class ComentsController extends Controller
             'coment' => ['required', 'string', 'min:5'],
         ]);
 
-        Coments::insert([
+        Coments::create([
             'coment' => $request->coment,
             'posts_id' => $request->post_id,
             'user_id' => Auth::user()->id,

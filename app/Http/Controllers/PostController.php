@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Coments;
+use App\Models\Like;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,21 +47,19 @@ class PostController extends Controller
 
         if ($request->hasFile('image'))
         {
-            Post::insert([
+            Post::create([
                 'title' => $request->title,
                 'content' => $request->content,
                 'image' => $request->file('image')->store('public/posts'),
-                'likes' => 0,
                 'user_id' => Auth::user()->id,
-                'created_at' => date('Y-m-d H:i:s'),
             ]);
+
         }else
         {
-            Post::insert([
+            Post::create([
                 'title' => $request->title,
                 'content' => $request->content,
                 'image' => 'public/posts/default_post.jpg',
-                'likes' => 0,
                 'user_id' => Auth::user()->id,
                 'created_at' => date('Y-m-d H:i:s'),
             ]);
@@ -79,9 +78,10 @@ class PostController extends Controller
     public function show($post)
     {
         $posts = Post::join('users', 'users.id', '=', 'posts.user_id')->select('users.name', 'posts.*')->find($post);
-        $coments = Coments::join('users', 'users.id', '=', 'coments.user_id')->select('users.name', 'coments.*')->where('posts_id', $post)->get();
-        $countcoments = Coments::where('posts_id', $post)->get()->count();
-        return view('posts.postShow', compact('posts', 'coments', 'countcoments'));
+        $coments = Coments::join('users', 'users.id', '=', 'coments.user_id')->select('users.name', 'users.profile',  'coments.*')->where('posts_id', $post)->get();
+        $countcoments = Coments::where('posts_id', $post)->where('status', 0)->get()->count();
+        $countlikes = Like::where('posts_id', $post)->get()->count();
+        return view('posts.postShow', compact('posts', 'coments', 'countcoments', 'countlikes'));
     }
 
     /**

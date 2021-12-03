@@ -16,8 +16,6 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 
 Route::resource('/posts', PostController::class)->middleware(['auth', 'verified'])->names('posts');
 
-Route::resource('/profession', ProfessionController::class)->middleware(['auth', 'verified'])->names('profession');
-
 Route::resource('/coments', ComentsController::class)->middleware(['auth', 'verified'])->names('coments');
 
 require __DIR__.'/auth.php';

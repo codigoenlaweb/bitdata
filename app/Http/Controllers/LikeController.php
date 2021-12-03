@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Profession;
+use App\Models\Like;
 use Illuminate\Http\Request;
 
-class ProfessionController extends Controller
+class LikeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class ProfessionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Profession  $profession
+     * @param  \App\Models\Like  $like
      * @return \Illuminate\Http\Response
      */
-    public function show(Profession $profession)
+    public function show(Like $like)
     {
         //
     }
@@ -52,10 +52,10 @@ class ProfessionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Profession  $profession
+     * @param  \App\Models\Like  $like
      * @return \Illuminate\Http\Response
      */
-    public function edit(Profession $profession)
+    public function edit(Like $like)
     {
         //
     }
@@ -64,10 +64,10 @@ class ProfessionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Profession  $profession
+     * @param  \App\Models\Like  $like
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Profession $profession)
+    public function update(Request $request, Like $like)
     {
         //
     }
@@ -75,10 +75,10 @@ class ProfessionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Profession  $profession
+     * @param  \App\Models\Like  $like
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Profession $profession)
+    public function destroy(Like $like)
     {
         //
     }

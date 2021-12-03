@@ -16,7 +16,7 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h2 class="text-3xl text-gray-600 font-bold">{{ $posts->title }}</h2>
-                    <p class="text-lg text-gray-500 font-bold">{{ $posts->likes }} likes</p>
+                    <p class="text-lg text-gray-500 font-bold">{{ $countlikes }} likes</p>
                     <p class="text-base text-gray-400 font-bold">Post date: {{ $posts->created_at->format('d-m-Y') }}</p>
                     <div>
                         <p>{{ $posts->content }}</p>
@@ -68,26 +68,29 @@
             </div>
         </div>
         @forelse ($coments as $coment)
-            <div class="py-2">
-                <div class="w-11/12 md:w-4/5 lg:w-3/4 max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-5 py-4">
-                        <div class="bg-white border-gray-200">
-                            <div class="flex">
-                                <p class="text-2xl text-gray-600 font-bold">{{ $coment->name }}</p>
-                                @if ($coment->user_id === Auth::user()->id || $posts->name === Auth::user()->name)
-                                    <form method="POST" action="{{ route('coments.destroy', ['coment' => $coment->id]) }}">
-                                        {{ method_field('DELETE') }}
-                                        @csrf
-                                        <input type="hidden" name="post_id" value="{{$coment->posts_id}}">
-                                        <input type="submit" value="Drop" class="mx-6 bg-white hover:text-red-600 text-gray-800 font-bold hover:border-red-600 py-1 px-3 border border-gray-400 rounded shadow">
-                                    </form>
-                                @endif
+            @if (!$coment->status)
+                <div class="py-2">
+                    <div class="w-11/12 md:w-4/5 lg:w-3/4 max-w-7xl mx-auto sm:px-6 lg:px-8">
+                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-5 py-4">
+                            <div class="bg-white border-gray-200">
+                                <div class="flex items-center">
+                                    <img src="{{ Storage::url($coment->profile) }}" alt="profile" class="h-12 w-12">
+                                    <p class="ml-2 text-2xl text-gray-600 font-bold rounded-full">{{ $coment->name }}</p>
+                                    @if ($coment->user_id === Auth::user()->id || $posts->name === Auth::user()->name)
+                                        <form method="POST" action="{{ route('coments.destroy', ['coment' => $coment->id]) }}">
+                                            {{ method_field('DELETE') }}
+                                            @csrf
+                                            <input type="hidden" name="post_id" value="{{$coment->posts_id}}">
+                                            <input type="submit" value="Drop" class="mx-6 bg-white hover:text-red-600 text-gray-800 font-bold hover:border-red-600 py-1 px-3 border border-gray-400 rounded shadow">
+                                        </form>
+                                    @endif
+                                </div>
+                                <p class="mt-1 text-lg text-gray-400 font-bold">{{ $coment->coment }}</p>
                             </div>
-                            <p class="mt-1 text-lg text-gray-400 font-bold">{{ $coment->coment }}</p>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
         @empty
 
         @endforelse

@@ -9,7 +9,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $posts = Post::join('users', 'users.id', '=', 'posts.user_id')->select('users.name', 'posts.*')->cursorPaginate(4);
+        $posts = Post::join('users', 'users.id', '=', 'posts.user_id')
+        ->select('users.name', 'users.github', 'users.facebook', 'users.instagram', 'users.twiter', 'posts.*')
+        ->cursorPaginate(8);
         return view('dashboard', compact('posts'));
     }
 }
