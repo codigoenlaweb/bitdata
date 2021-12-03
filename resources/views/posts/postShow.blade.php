@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Create By {{ ($posts->name) }}
+            Create By {{ ($posts->user) }}
         </h2>
     </x-slot>
 
@@ -16,8 +16,38 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h2 class="text-3xl text-gray-600 font-bold">{{ $posts->title }}</h2>
-                    <p class="text-lg text-gray-500 font-bold">{{ $countlikes }} likes</p>
-                    <p class="text-base text-gray-400 font-bold">Post date: {{ $posts->created_at->format('d-m-Y') }}</p>
+                    <!-- likes -->
+                    <div class="flex">
+                        <p class="text-lg text-gray-500 font-bold mr-4">{{ $countlikes }} likes</p>
+                        <!-- form likes -->
+                        @if ($post_like_count === 0)
+                            <form action="{{ route('likes.store') }}" method="post">
+                                @csrf
+                                <input type="hidden" name="post_id" value="{{ $posts->id }}">
+                                <button class="text-white px-4 w-auto h-7 bg-gray-500 rounded-full hover:bg-gray-600 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none">
+                                    <svg viewBox="0 0 20 20" enable-background="new 0 0 20 20" class="w-4 h-4 inline-block">
+                                        <path fill="#FFFFFF" d="M17.19,4.155c-1.672-1.534-4.383-1.534-6.055,0L10,5.197L8.864,4.155c-1.672-1.534-4.382-1.534-6.054,0
+                                            c-1.881,1.727-1.881,4.52,0,6.246L10,17l7.19-6.599C19.07,8.675,19.07,5.881,17.19,4.155z"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        @else
+                            <form action="{{ route('likes.destroy', ['like' => $post_like[0]->id]) }}" method="post">
+                                {{ method_field('DELETE') }}
+                                @csrf
+                                <input type="hidden" name="post_id" value="{{ $posts->id }}">
+                                <button class="text-white px-4 w-auto h-7 bg-purple-500 rounded-full hover:bg-purple-600 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none">
+                                    <svg viewBox="0 0 20 20" enable-background="new 0 0 20 20" class="w-4 h-4 inline-block">
+                                        <path fill="#FFFFFF" d="M17.19,4.155c-1.672-1.534-4.383-1.534-6.055,0L10,5.197L8.864,4.155c-1.672-1.534-4.382-1.534-6.054,0
+                                            c-1.881,1.727-1.881,4.52,0,6.246L10,17l7.19-6.599C19.07,8.675,19.07,5.881,17.19,4.155z"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        @endif
+
+                    </div>
+                    <!-- end likes -->
+                    <p class="text-base text-gray-400 font-bold my-1">Post date: {{ $posts->created_at->format('d-m-Y') }}</p>
                     <div>
                         <p>{{ $posts->content }}</p>
                     </div>
@@ -85,7 +115,7 @@
                                         </form>
                                     @endif
                                 </div>
-                                <p class="mt-1 text-lg text-gray-400 font-bold">{{ $coment->coment }}</p>
+                                <p class="mt-1 text-lg text-gray-500 font-bold">{{ $coment->coment }}</p>
                             </div>
                         </div>
                     </div>

@@ -77,11 +77,13 @@ class PostController extends Controller
      */
     public function show($post)
     {
-        $posts = Post::join('users', 'users.id', '=', 'posts.user_id')->select('users.name', 'posts.*')->find($post);
+        $posts = Post::join('users', 'users.id', '=', 'posts.user_id')->select('users.name', 'users.user', 'posts.*')->find($post);
         $coments = Coments::join('users', 'users.id', '=', 'coments.user_id')->select('users.name', 'users.profile',  'coments.*')->where('posts_id', $post)->get();
         $countcoments = Coments::where('posts_id', $post)->where('status', 0)->get()->count();
+        $post_like = Like::where('posts_id', $post)->where('user_id', Auth::user()->id)->get();
+        $post_like_count = Like::where('posts_id', $post)->where('user_id', Auth::user()->id)->get()->count();
         $countlikes = Like::where('posts_id', $post)->get()->count();
-        return view('posts.postShow', compact('posts', 'coments', 'countcoments', 'countlikes'));
+        return view('posts.postShow', compact('posts', 'coments', 'countcoments', 'countlikes', 'post_like', 'post_like_count'));
     }
 
     /**

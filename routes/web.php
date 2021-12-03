@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ComentsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfessionController;
 use Illuminate\Support\Facades\Route;
@@ -17,5 +18,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 Route::resource('/posts', PostController::class)->middleware(['auth', 'verified'])->names('posts');
 
 Route::resource('/coments', ComentsController::class)->middleware(['auth', 'verified'])->names('coments');
+
+Route::resource('/likes', LikeController::class)->middleware(['auth', 'verified'])->names('likes');
 
 require __DIR__.'/auth.php';
