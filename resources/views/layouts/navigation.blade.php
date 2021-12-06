@@ -24,6 +24,12 @@
                         {{ __('Create Post') }}
                     </x-nav-link>
                 </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('panel.show', ['panel' => Auth::user()->id])" :active="request()->routeIs('posts.create')">
+                        Panel
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -42,6 +48,10 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <x-dropdown-link :href="route('profile.show', ['profile' => Auth::user()->id])">
+                            Profile
+                        </x-dropdown-link>
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -84,10 +94,9 @@
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->user }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
+            <x-responsive-nav-link :href="route('profile.show', ['profile' => Auth::user()->id] )" :active="request()->routeIs('profile.show', ['profile' => Auth::user()->id])">
+                {{ __('Profile') }}
+            </x-responsive-nav-link>
 
             <div class="mt-3 space-y-1">
                 <!-- Authentication -->
