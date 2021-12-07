@@ -54,13 +54,24 @@
                 </div>
             </div>
         </div>
-        @if ($posts->name === Auth::user()->name)
+        @if ($posts->user_id === Auth::user()->id || Auth::user()->role === 'admin')
             <div class="mt-4 flex justify-center">
-                <a href="{{ route('posts.edit', ['post' => $posts->id])}}">
-                    <button class="mx-6 bg-white hover:bg-blue-500 hover:text-white text-gray-800 font-bold hover:border-blue-800 py-2 px-4 border border-gray-400 rounded shadow">
-                        Edit
-                    </button>
-                </a>
+                @if ($posts->user_id === Auth::user()->id)
+                    <a href="{{ route('posts.edit', ['post' => $posts->id])}}">
+                        <button class="mx-6 bg-white hover:bg-blue-500 hover:text-white text-gray-800 font-bold hover:border-blue-800 py-2 px-4 border border-gray-400 rounded shadow">
+                            Edit
+                        </button>
+                    </a>
+                @endif
+
+                @if (Auth::user()->role === 'admin' && !$posts->banned)
+                    <form method="POST" action="{{ route('bannedpost.update', ['banned_post' => $posts->user_id]) }}">
+                        {{ method_field('PUT') }}
+                        @csrf
+                        <input type="hidden" name="post_id" value="{{ $posts->id }}">
+                        <input type="submit" onclick="return confirm('banned user?')" value="Banned" class="mx-6 bg-white hover:bg-red-500 hover:text-white text-gray-800 font-bold hover:border-red-800 py-2 px-4 border border-gray-400 rounded shadow">
+                    </form>
+                @endif
 
                 <form method="POST" action="{{ route('posts.destroy', ['post' => $posts->id]) }}">
                     {{ method_field('DELETE') }}
@@ -106,7 +117,7 @@
                                 <div class="flex items-center">
                                     <img src="{{ Storage::url($coment->profile) }}" alt="profile" class="h-12 w-12">
                                     <p class="ml-2 text-2xl text-gray-600 font-bold rounded-full">{{ $coment->name }}</p>
-                                    @if ($coment->user_id === Auth::user()->id || $posts->name === Auth::user()->name || Auth::user()->role === 'admin')
+                                    @if ($coment->user_id === Auth::user()->id || Auth::user()->role === 'admin')
                                         <form method="POST" action="{{ route('coments.destroy', ['coment' => $coment->id]) }}">
                                             {{ method_field('DELETE') }}
                                             @csrf

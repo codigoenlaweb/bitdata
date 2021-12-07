@@ -78,7 +78,7 @@ class PostController extends Controller
     public function show($post)
     {
         $posts = Post::join('users', 'users.id', '=', 'posts.user_id')
-        ->select('users.name', 'users.user', 'posts.*')
+        ->select('users.name', 'users.user', 'users.banned', 'posts.*')
         ->find($post);
 
         $coments = Coments::join('users', 'users.id', '=', 'coments.user_id')
