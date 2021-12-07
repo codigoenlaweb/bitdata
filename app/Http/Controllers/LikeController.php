@@ -42,7 +42,7 @@ class LikeController extends Controller
             'posts_id' => $request->post_id,
         ]);
 
-        return redirect('posts/'.$request->post_id);
+        return redirect()->route('posts.show', ['post' => $request->post_id]);
     }
 
     /**
@@ -88,6 +88,6 @@ class LikeController extends Controller
     public function destroy(Request $request, Like $like)
     {
         Like::destroy($like->id);
-        return redirect('posts/'.$request->post_id);
+        return redirect()->route('posts.show', ['post' => $request->post_id]);
     }
 }

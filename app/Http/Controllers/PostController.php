@@ -65,7 +65,7 @@ class PostController extends Controller
             ]);
         }
 
-        return redirect('/dashboard')->with('message', 'Your post has been created with success!');
+        return redirect()->route('dashboard')->with('message', 'Your post has been created with success!');
 
     }
 
@@ -95,13 +95,7 @@ class PostController extends Controller
     public function edit($post)
     {
         $posts = Post::find($post);
-        if (Auth::User()->id == $posts->user_id)
-        {
-            return view('posts.postEdit', compact('posts'));
-        }else
-        {
-            return redirect('/dashboard')->with('message', 'permission denied!');
-        }
+        return view('posts.postEdit', compact('posts'));
     }
 
     /**
@@ -147,7 +141,7 @@ class PostController extends Controller
             ]);
         }
 
-        return redirect('posts/'.$request->post_id)->with('message', 'Your post has been updated!');
+        return redirect()->route('posts.show', ['post' => $request->post_id])->with('message', 'Your post has been updated!');
     }
 
     /**
@@ -166,6 +160,6 @@ class PostController extends Controller
             Storage::delete($url);
         }
         Post::destroy($post);
-        return redirect('/dashboard')->with('message', 'Your post has been deleted!');
+        return redirect()->route('dashboard')->with('message', 'Your post has been deleted!');
     }
 }

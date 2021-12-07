@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ComentDropPanelController;
 use App\Http\Controllers\ComentsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LikeController;
@@ -26,5 +27,7 @@ Route::resource('/likes', LikeController::class)->middleware(['auth', 'verified'
 Route::resource('/profile', ProfileController::class)->middleware(['auth', 'verified'])->names('profile')->only('show', 'update');
 
 Route::resource('/panel', PanelController::class)->middleware(['auth', 'verified'])->names('panel')->only('show');
+
+Route::resource('/coment_drop_panel', ComentDropPanelController::class)->middleware(['auth', 'verified'])->names('coment_panel')->only('destroy');
 
 require __DIR__.'/auth.php';

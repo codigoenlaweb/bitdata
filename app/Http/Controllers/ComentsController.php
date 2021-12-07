@@ -8,25 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ComentsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return 'hola';
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -46,41 +27,7 @@ class ComentsController extends Controller
             'user_id' => Auth::user()->id,
         ]);
 
-        return redirect('posts/'.$request->post_id);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Coments  $coments
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Coments $coments)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Coments  $coments
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Coments $coments)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Coments  $coments
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Coments $coments)
-    {
-        //
+        return redirect()->route('posts.show', ['post' => $request->post_id]);
     }
 
     /**
@@ -92,8 +39,8 @@ class ComentsController extends Controller
     public function destroy(Request $request, Coments $coment)
     {
         $coment_delete = Coments::find($coment);
-
         Coments::destroy($coment_delete);
-        return redirect('posts/'.$request->post_id);
+
+        return redirect()->route('posts.show', ['post' => $request->post_id]);
     }
 }

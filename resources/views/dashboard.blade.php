@@ -19,7 +19,7 @@
                            <a href="{{ route('posts.show', ['post' => $post->id])}}"><img class="object-center object-cover w-full h-full" src="{{ Storage::url($post['image']) }}" alt="photo"></a>
                         </div>
                         <div class="w-full md:w-3/5 text-left p-4 md:p-4 space-y-2">
-                            <p class="text-xl text-gray-600 font-bold hover:text-gray-800"><a href="{{ route('posts.show', ['post' => $post->id])}}">{{ $post->title }}</a></p>
+                            <p class="text-xl text-gray-600 font-bold hover:text-gray-800"><a href="{{ route('posts.show', ['post' => $post->id])}}">{{ Str::limit($post->title, 25, '...') }}</a></p>
                             <p class="text-base text-gray-400 font-normal">{{ $post->user }}</p>
                             <p class="text-base leading-relaxed text-gray-500 font-normal"><a href="{{ route('posts.show', ['post' => $post->id])}}">{{ Str::limit($post->content, 250, '...') }}</a></p>
                             <div class="flex justify-start space-x-2">
