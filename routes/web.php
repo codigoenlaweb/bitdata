@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BannedController;
 use App\Http\Controllers\ComentDropPanelController;
 use App\Http\Controllers\ComentsController;
 use App\Http\Controllers\DashboardController;
@@ -29,5 +30,7 @@ Route::resource('/profile', ProfileController::class)->middleware(['auth', 'veri
 Route::resource('/panel', PanelController::class)->middleware(['auth', 'verified'])->names('panel')->only('show');
 
 Route::resource('/coment_drop_panel', ComentDropPanelController::class)->middleware(['auth', 'verified'])->names('coment_panel')->only('destroy');
+
+Route::resource('/banned', BannedController::class)->middleware(['auth', 'verified'])->names('banned')->only('update');
 
 require __DIR__.'/auth.php';

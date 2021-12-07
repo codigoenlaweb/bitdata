@@ -106,12 +106,19 @@
                                 <div class="flex items-center">
                                     <img src="{{ Storage::url($coment->profile) }}" alt="profile" class="h-12 w-12">
                                     <p class="ml-2 text-2xl text-gray-600 font-bold rounded-full">{{ $coment->name }}</p>
-                                    @if ($coment->user_id === Auth::user()->id || $posts->name === Auth::user()->name)
+                                    @if ($coment->user_id === Auth::user()->id || $posts->name === Auth::user()->name || Auth::user()->role === 'admin')
                                         <form method="POST" action="{{ route('coments.destroy', ['coment' => $coment->id]) }}">
                                             {{ method_field('DELETE') }}
                                             @csrf
                                             <input type="hidden" name="post_id" value="{{$coment->posts_id}}">
                                             <input type="submit" value="Drop" class="mx-6 bg-white hover:text-red-600 text-gray-800 font-bold hover:border-red-600 py-1 px-3 border border-gray-400 rounded shadow">
+                                        </form>
+
+                                        <form method="POST" action="{{ route('coments.update', ['coment' => $coment->id]) }}">
+                                            {{ method_field('PUT') }}
+                                            @csrf
+                                            <input type="hidden" name="post_id" value="{{$coment->posts_id}}">
+                                            <input type="submit" value="Reported!" class="bg-white hover:text-red-600 text-gray-800 font-bold hover:border-red-600 py-1 px-3 border border-gray-400 rounded shadow">
                                         </form>
                                     @endif
                                 </div>

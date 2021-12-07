@@ -30,6 +30,18 @@ class ComentsController extends Controller
         return redirect()->route('posts.show', ['post' => $request->post_id]);
     }
 
+    public function update(Request $request, $coment)
+    {
+
+        $user_banned = Coments::find($coment);
+        $user_banned->update([
+            'status' => '1'
+        ]);
+
+
+        return redirect()->route('posts.show', ['post' => $request->post_id])->with('message', 'the comment has been reported');
+    }
+
     /**
      * Remove the specified resource from storage.
      *
