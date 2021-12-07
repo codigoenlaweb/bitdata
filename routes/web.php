@@ -20,11 +20,11 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::resource('/posts', PostController::class)->middleware(['auth', 'verified'])->names('posts');
+Route::resource('/posts', PostController::class)->middleware(['auth', 'verified'])->names('posts')->except(['index']);
 
-Route::resource('/coments', ComentsController::class)->middleware(['auth', 'verified'])->names('coments');
+Route::resource('/coments', ComentsController::class)->middleware(['auth', 'verified'])->names('coments')->only(['store', 'update', 'destroy']);
 
-Route::resource('/likes', LikeController::class)->middleware(['auth', 'verified'])->names('likes');
+Route::resource('/likes', LikeController::class)->middleware(['auth', 'verified'])->names('likes')->only(['store', 'destroy']);
 
 Route::resource('/profile', ProfileController::class)->middleware(['auth', 'verified'])->names('profile')->only('show', 'update');
 
