@@ -19,26 +19,33 @@ class PanelController extends Controller
      */
     public function show($panel)
     {
-        $posts = Post::where('user_id', $panel)->orderBy('id', 'DESC')->get();
+        if ($panel == Auth::user()->id) {
 
-        $coments = Coments::join('users', 'coments.user_id', '=', 'users.id')
-        ->join('posts', 'coments.posts_id', '=', 'posts.id')
-        ->select('coments.id', 'coments.coment', 'users.name', 'coments.user_id', 'users.profile', 'coments.status')
-        ->where('coments.user_id', '!=', $panel)
-        ->where('posts.user_id', '=', $panel)
-        ->orderBy('id', 'DESC')->Paginate(12);
+            $posts = Post::where('user_id', $panel)->orderBy('id', 'DESC')->get();
 
-        $adminposts = Post::join('users', 'posts.user_id', '=', 'users.id')
-        ->select('posts.*', 'users.banned', 'users.user')
-        ->orderBy('id', 'DESC')
-        ->get();
+            $coments = Coments::join('users', 'coments.user_id', '=', 'users.id')
+            ->join('posts', 'coments.posts_id', '=', 'posts.id')
+            ->select('coments.id', 'coments.coment', 'users.name', 'coments.user_id', 'users.profile', 'coments.status')
+            ->where('coments.user_id', '!=', $panel)
+            ->where('posts.user_id', '=', $panel)
+            ->orderBy('id', 'DESC')->Paginate(12);
 
-        $admincoments = Coments::join('users', 'coments.user_id', '=', 'users.id')
-        ->join('posts', 'coments.posts_id', '=', 'posts.id')
-        ->select('coments.id', 'coments.coment', 'users.name', 'coments.user_id', 'users.profile', 'users.banned', 'coments.status')
-        ->where('coments.user_id', '!=', $panel)
-        ->orderBy('id', 'DESC')->Paginate(12);
-        return view('panel.show_panel', compact('panel', 'posts', 'coments', 'adminposts', 'admincoments'));
+            $adminposts = Post::join('users', 'posts.user_id', '=', 'users.id')
+            ->select('posts.*', 'users.banned', 'users.user')
+            ->orderBy('id', 'DESC')
+            ->get();
+
+            $admincoments = Coments::join('users', 'coments.user_id', '=', 'users.id')
+            ->join('posts', 'coments.posts_id', '=', 'posts.id')
+            ->select('coments.id', 'coments.coment', 'users.name', 'coments.user_id', 'users.profile', 'users.banned', 'coments.status')
+            ->where('coments.user_id', '!=', $panel)
+            ->orderBy('id', 'DESC')->Paginate(12);
+
+            return view('panel.show_panel', compact('panel', 'posts', 'coments', 'adminposts', 'admincoments'));
+        }else{
+            return redirect()->route('panel.show', ['panel' => Auth::user()->id]);
+        }
+
     }
 
 

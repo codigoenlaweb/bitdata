@@ -11,15 +11,6 @@ use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -105,7 +96,6 @@ class PostController extends Controller
         ->get()
         ->count();
 
-
         return view('posts.postShow', compact('posts', 'coments', 'countcoments', 'countlikes', 'post_like', 'post_like_count'));
     }
 
@@ -117,8 +107,13 @@ class PostController extends Controller
      */
     public function edit($post)
     {
+
         $posts = Post::find($post);
-        return view('posts.postEdit', compact('posts'));
+        if ($posts->user_id == Auth::user()->id) {
+            return view('posts.postEdit', compact('posts'));
+        }else{
+            return redirect()->route('dashboard')->with('message', 'Access denied!');
+        }
     }
 
     /**
@@ -176,13 +171,19 @@ class PostController extends Controller
     public function destroy($post)
     {
         $posts = Post::find($post);
+        $coments = Coments::where('posts_id', '=', $post)->get();
+        $likes = Like::where('posts_id', '=', $post)->get();
 
         if ($posts->image != 'public/posts/default_post.jpg') {
             $url = str_replace('storage', 'public', $posts->image);
 
             Storage::delete($url);
         }
+
+        Coments::destroy($coments);
+        Like::destroy($likes);
         Post::destroy($post);
+
         return redirect()->route('dashboard')->with('message', 'Your post has been deleted!');
     }
 }

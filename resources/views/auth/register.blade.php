@@ -7,6 +7,9 @@
             </a>
         </x-slot>
 
+        <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
+            <a href="{{ route('login') }}" class="font-bold text-lg text-purple-800 dark:text-gray-500 underline">Log in</a>
+        </div>
         <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
 

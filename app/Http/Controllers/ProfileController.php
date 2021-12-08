@@ -16,9 +16,13 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($profile)
     {
-        return view('profile.show', compact('id'));
+        if ($profile == Auth::user()->id) {
+            return view('profile.show', compact('profile'));
+        }else{
+            return redirect()->route('profile.show', ['profile' => Auth::user()->id]);
+        }
     }
 
     /**
